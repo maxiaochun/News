@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.xiao.news.R;
-import com.xiao.news.Utils.ConstantValue;
+import com.xiao.news.Utils.GlobalConstants;
 import com.xiao.news.Utils.PrefUtils;
 
 import java.util.ArrayList;
@@ -91,7 +91,7 @@ public class GuideActivity extends Activity {
             @Override
             public void onClick(View view) {
                 //更新sp
-                PrefUtils.setBoolean(getApplicationContext(), ConstantValue.IS_FIRST_ENTER, false);
+                PrefUtils.setBoolean(getApplicationContext(), GlobalConstants.IS_FIRST_ENTER, false);
                 //跳转到主页面
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
