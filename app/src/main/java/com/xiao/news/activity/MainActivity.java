@@ -1,18 +1,18 @@
 package com.xiao.news.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
 import com.xiao.news.R;
-import com.xiao.news.pager.BasePager;
-import com.xiao.news.pager.ConcernPager;
-import com.xiao.news.pager.HomePager;
-import com.xiao.news.pager.MinePager;
-import com.xiao.news.pager.VideoPager;
+import com.xiao.news.pager.BaseFragment;
+import com.xiao.news.pager.pagers.ConcernPager;
+import com.xiao.news.pager.pagers.HomePager;
+import com.xiao.news.pager.pagers.MinePager;
+import com.xiao.news.pager.pagers.VideoPager;
 import com.xiao.news.view.NoScrollViewPager;
 
 import java.util.ArrayList;
@@ -20,11 +20,11 @@ import java.util.ArrayList;
 /**
  * Created by hasee on 2016/6/16.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FragmentActivity {
 
     private NoScrollViewPager mViewPager;
     private RadioGroup mRadioGroup;
-    private ArrayList<BasePager> mPagers;
+    private ArrayList<BaseFragment> mPagers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
     private void initData() {
         //封装四个页面
         mPagers = new ArrayList<>();
-        mPagers.add(new HomePager(this));
-        mPagers.add(new VideoPager(this));
-        mPagers.add(new ConcernPager(this));
-        mPagers.add(new MinePager(this));
+        mPagers.add(new HomePager());
+        mPagers.add(new VideoPager());
+        mPagers.add(new ConcernPager());
+        mPagers.add(new MinePager());
 
         mViewPager.setAdapter(new MyAdapter());
 
@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     class MyAdapter extends PagerAdapter {
+
         @Override
         public int getCount() {
             return mPagers.size();
@@ -88,12 +89,12 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
-            return view == object;
+            return object ==view;
         }
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            BasePager pager = mPagers.get(position);
+            BaseFragment pager = mPagers.get(position);
             View view = pager.mRootView;
             container.addView(view);
             return view;
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((View) object);
+            container.removeView((View)object);
         }
     }
 }

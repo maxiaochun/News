@@ -146,6 +146,7 @@ public class GuideActivity extends Activity {
      * ViewPager的adapter
      */
     private class MyAdapter extends PagerAdapter {
+
         @Override
         public int getCount() {
             return mImageViewList.size();
