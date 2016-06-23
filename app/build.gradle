@@ -26,4 +26,5 @@ dependencies {
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile files('libs/gson-2.3.1.jar')
     compile project(':viewPagerIndicatorLibrary')
+    compile 'org.xutils:xutils:3.3.36'
 }

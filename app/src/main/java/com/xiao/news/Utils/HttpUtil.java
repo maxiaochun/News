@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 
 /**
  * Created by hasee on 2016/6/21.
@@ -20,7 +19,6 @@ import java.util.List;
 public class HttpUtil {
 
     private static String result;
-    private static List<NewsTabBean.ShowapiResBodyBean.PagebeanBean.ContentlistBean> mContentList;
     private static NewsTabBean mNewTabData;
 
     public static void getDataFromService(final String url, final Handler handler) {
@@ -64,7 +62,7 @@ public class HttpUtil {
 
             Message msg = new Message();
             Bundle bundle = new Bundle();
-            bundle.putString("content", mContentList.toString());//将数据绑定到bundle
+//            bundle.putString("content", mContentList.toString());//将数据绑定到bundle
             msg.setData(bundle);//将bundle传递到message
             handler.sendMessage(msg);//发送到主线程
         } catch (Exception e) {
@@ -79,7 +77,7 @@ public class HttpUtil {
     private static void processData(String json) {
         Gson gson = new Gson();
         mNewTabData = gson.fromJson(json, NewsTabBean.class);
-        mContentList = mNewTabData.getShowapi_res_body().getPagebean().getContentlist();
+//        mContentList = mNewTabData.getShowapi_res_body().getPagebean().getContentlist();
 
     }
 }

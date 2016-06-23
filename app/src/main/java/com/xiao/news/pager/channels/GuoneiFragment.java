@@ -2,14 +2,16 @@ package com.xiao.news.pager.channels;
 
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.xiao.news.R;
-import com.xiao.news.Utils.UrlUtils;
 import com.xiao.news.domin.NewsTabBean;
 import com.xiao.news.pager.BaseFragment;
 
@@ -27,10 +29,12 @@ public class GuoneiFragment extends BaseFragment {
 
     private static final String TAG = "GuoneiFragment";
 
-    private  String url;
+    private String url;
     private String result;
-    private  NewsTabBean mNewTabData;
-    private List<NewsTabBean.ShowapiResBodyBean.PagebeanBean.ContentlistBean> mContentlist;
+    private NewsTabBean mNewTabData;
+    private List<NewsTabBean.NewslistBean> mContentlist;
+    private ListView mListView;
+    private TextView mContent;
 
     public GuoneiFragment() {
 
@@ -38,19 +42,20 @@ public class GuoneiFragment extends BaseFragment {
     }
 
     Handler mHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                Log.e(TAG, "handleMessage: success" );
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            mListView.setAdapter(new MyAdapter());
 
-            }
-        };
+        }
+    };
 
 
     @Override
     public View initView(LayoutInflater inflater) {
         View view = View.inflate(mActivity, R.layout.news_guonei, null);
-        ListView mListView = (ListView) view.findViewById(R.id.lv_guonei);
+        mListView = (ListView) view.findViewById(R.id.lv_guonei);
+        mContent = (TextView) view.findViewById(R.id.tv_content);
         return view;
 
     }
@@ -59,7 +64,8 @@ public class GuoneiFragment extends BaseFragment {
     public void initData() {
         //获取数据
 //        HttpUtil.getDataFromService(url,mHandler);
-        url = UrlUtils.GUONEI;
+//        url = UrlUtils.GUONEI;
+        url = "http://apis.baidu.com/txapi/social/social?num=10&page=1";
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -68,7 +74,7 @@ public class GuoneiFragment extends BaseFragment {
         }).start();
     }
 
-    public  void request(String url, Handler handler) {
+    public void request(String url, Handler handler) {
         BufferedReader reader = null;
         StringBuffer sbf = new StringBuffer();
 //        httpUrl = httpUrl + "?" + httpArg;
@@ -104,11 +110,60 @@ public class GuoneiFragment extends BaseFragment {
     /**
      * 解析数据
      */
-    private  void processData(String json) {
+    private void processData(String json) {
         Gson gson = new Gson();
-        gson.fromJson(json,NewsTabBean.class);
-        mContentlist = mNewTabData.getShowapi_res_body().getPagebean().getContentlist();
+        NewsTabBean mNewTabData = gson.fromJson(json, NewsTabBean.class);
+        mContentlist = mNewTabData.getNewslist();
 
+
+    }
+
+    private class MyAdapter extends BaseAdapter {
+
+
+
+        @Override
+        public int getCount() {
+            return mContentlist.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return mContentlist.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public View getView(int positon, View convertView, ViewGroup viewGroup) {
+             ViewHolder holder;
+
+            if (convertView == null) {
+                convertView = View.inflate(mActivity, R.layout.news_item, null);
+                holder = new ViewHolder();
+                holder.pic = (ImageView) convertView.findViewById(R.id.iv_pic);
+                holder.title = (TextView) convertView.findViewById(R.id.tv_title);
+                holder.ctime = (TextView) convertView.findViewById(R.id.tv_ctime);
+                convertView.setTag(holder);
+
+            }else {
+               holder = (ViewHolder) convertView.getTag();
+            }
+//            holder.pic.setImageResource(mContentlist.get(positon).getPicUrl());
+//            holder.pic.setImageResource(R.mipmap.ic_launcher);
+            holder.title.setText(mContentlist.get(positon).getTitle());
+            holder.ctime.setText(mContentlist.get(positon).getCtime());
+            return convertView;
+        }
+    }
+
+    static class ViewHolder {
+        TextView title;
+        TextView ctime;
+        ImageView pic;
 
     }
 }

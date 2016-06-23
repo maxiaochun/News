@@ -18,5 +18,5 @@ public class UrlUtils {
     public static final String CAIJING = HTTPURL + "?" + "channelId=5572a108b3cdc86cf39001d0&page=1&needContent=0&needHtml=0";
     public static final String YULE = HTTPURL + "?" + "channelId=5572a108b3cdc86cf39001d5&page=1&needContent=0&needHtml=0";
 
-
+//    http://apis.baidu.com/showapi_open_bus/channel_news/search_news?channelId=5572a109b3cdc86cf39001?db&page=1&needContent=0&needHtml=0
 }
