@@ -10,12 +10,8 @@ import android.widget.ImageButton;
 
 import com.viewpagerindicator.TabPageIndicator;
 import com.xiao.news.R;
+import com.xiao.news.Utils.UrlUtils;
 import com.xiao.news.pager.BaseFragment;
-import com.xiao.news.pager.channels.CaijingFragment;
-import com.xiao.news.pager.channels.GuojiFragment;
-import com.xiao.news.pager.channels.GuoneiFragment;
-import com.xiao.news.pager.channels.JunshiFragment;
-import com.xiao.news.pager.channels.YuleFragment;
 
 import java.util.ArrayList;
 
@@ -48,20 +44,22 @@ public class HomePager extends BaseFragment {
     public void initData() {
 
         //indicator 数据
-        PageTitle = new String[]{"国内", "国际", "军事", "财经", "娱乐"};
+        PageTitle = new String[]{"社会", "国际", "科技", "体育", "苹果"};
 
         //viewpager数据
         mChannelList = new ArrayList<>();
-        GuoneiFragment guoneiFragment = new GuoneiFragment();
-        GuojiFragment guojiFragment = new GuojiFragment();
-        JunshiFragment junshiFragment = new JunshiFragment();
-        CaijingFragment caijingFragment = new CaijingFragment();
-        YuleFragment yuleFragment = new YuleFragment();
-        mChannelList.add(guoneiFragment);
+
+        BaseChannelFragment shehuiFragment = new BaseChannelFragment(UrlUtils.SHEHUI);
+        BaseChannelFragment guojiFragment = new BaseChannelFragment(UrlUtils.GUOJI);
+        BaseChannelFragment kejiFragment = new BaseChannelFragment(UrlUtils.KEJI);
+        BaseChannelFragment tiyuFragment = new BaseChannelFragment(UrlUtils.TIYU);
+        BaseChannelFragment appleFragment = new BaseChannelFragment(UrlUtils.APPLE);
+
+        mChannelList.add(shehuiFragment);
         mChannelList.add(guojiFragment);
-        mChannelList.add(junshiFragment);
-        mChannelList.add(caijingFragment);
-        mChannelList.add(yuleFragment);
+        mChannelList.add(kejiFragment);
+        mChannelList.add(tiyuFragment);
+        mChannelList.add(appleFragment);
 
 
         /**
@@ -89,25 +87,26 @@ public class HomePager extends BaseFragment {
     private class ChannelAdapter extends FragmentPagerAdapter {
         /**
          * 构造方法需要传入 FragmentManager
+         *
          * @param fm
          */
-            public ChannelAdapter(FragmentManager fm) {
-                super(fm);
-            }
+        public ChannelAdapter(FragmentManager fm) {
+            super(fm);
+        }
 
-            @Override
-            public int getCount() {
-                return mChannelList.size();
-            }
+        @Override
+        public int getCount() {
+            return mChannelList.size();
+        }
 
-            @Override
-            public Fragment getItem(int arg0) {
-                return mChannelList.get(arg0);
-            }
+        @Override
+        public Fragment getItem(int arg0) {
+            return mChannelList.get(arg0);
+        }
 
         @Override
         public CharSequence getPageTitle(int position) {
             return PageTitle[position];
         }
-        }
+    }
 }

@@ -5,16 +5,9 @@
     android:background="#fff"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="军事"
-        android:textColor="#f00"
-        android:textSize="30dp"
-        />
+
     <ListView
-        android:id="@+id/lv_guonei"
+        android:id="@+id/lv_keji"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
