@@ -1,5 +1,6 @@
 package com.xiao.news.pager.pagers;
 
+import android.view.LayoutInflater;
 import android.view.View;
 
 import com.xiao.news.R;
@@ -11,12 +12,11 @@ import com.xiao.news.pager.BaseFragment;
 public class ConcernPager extends BaseFragment {
 
 
-
-    public View initView() {
+    @Override
+    public View initView(LayoutInflater inflater) {
         View view = View.inflate(getActivity(), R.layout.pager_concern, null);
 
         return view;
-
     }
 
     @Override

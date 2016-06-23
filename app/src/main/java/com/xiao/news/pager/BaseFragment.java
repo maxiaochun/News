@@ -25,7 +25,7 @@ public abstract class BaseFragment extends android.support.v4.app.Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mRootView = initView();//当前页面布局
+        mRootView = initView(inflater);//当前页面布局
         return mRootView;
     }
     // fragment所依赖的activity的onCreate方法执行结束
@@ -35,7 +35,7 @@ public abstract class BaseFragment extends android.support.v4.app.Fragment {
         initData();
     }
     //初始化布局
-    public abstract View initView() ;
+    public abstract View initView(LayoutInflater inflater) ;
     //初始化数据
     public abstract void initData();
 

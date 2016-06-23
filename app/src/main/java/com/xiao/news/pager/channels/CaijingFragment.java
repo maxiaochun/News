@@ -1,5 +1,6 @@
 package com.xiao.news.pager.channels;
 
+import android.view.LayoutInflater;
 import android.view.View;
 
 import com.xiao.news.R;
@@ -12,8 +13,8 @@ public class CaijingFragment extends BaseFragment {
 
 
     @Override
-    public View initView() {
-        View view = View.inflate(mActivity, R.layout.news_junshi, null);
+    public View initView(LayoutInflater inflater) {
+        View view = View.inflate(mActivity, R.layout.news_caijing, null);
         return view;
 
     }

@@ -1,5 +1,6 @@
 package com.xiao.news.pager.pagers;
 
+import android.view.LayoutInflater;
 import android.view.View;
 
 import com.xiao.news.R;
@@ -13,7 +14,7 @@ public class VideoPager extends BaseFragment {
 
 
 
-    public View initView(){
+    public View initView(LayoutInflater inflater){
         View view = View.inflate(getActivity(),R.layout.pager_video,null);
 
         return view;

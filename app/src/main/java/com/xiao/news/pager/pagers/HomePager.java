@@ -1,10 +1,11 @@
 package com.xiao.news.pager.pagers;
 
-import android.support.v4.view.PagerAdapter;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.viewpagerindicator.TabPageIndicator;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
  * Created by hasee on 2016/6/17.
  */
 public class HomePager extends BaseFragment {
-
+    public View mRootView;
 
     private static final String TAG = "HomePager";
     private TabPageIndicator mIndicator;//页签指示器
@@ -30,22 +31,20 @@ public class HomePager extends BaseFragment {
     private ImageButton mQuery;//查询按钮
     private ViewPager mNewsDetailViewPager;//新闻详情viewpager
     private String[] PageTitle;//页签内容
+
+
     private ArrayList<BaseFragment> mChannelList; //每个频道pager的集合
 
-
-
-    @Override
-    public View initView() {
-        View view = View.inflate(mActivity, R.layout.pager_home, null);
+    public View initView(LayoutInflater inflater) {
+        View view = inflater.inflate(R.layout.pager_home, null);
         mIndicator = (TabPageIndicator) view.findViewById(R.id.indicator);
-        mAdd = (ImageButton) view.findViewById(R.id.ib_add);
-        mQuery = (ImageButton) view.findViewById(R.id.ib_query);
-        mNewsDetailViewPager = (ViewPager)view.findViewById(R.id.vp_news_tab_detail);
+//        mAdd = (ImageButton) view.findViewById(R.id.ib_add);
+//        mQuery = (ImageButton) view.findViewById(R.id.ib_query);
+        mNewsDetailViewPager = (ViewPager) view.findViewById(R.id.vp_news_tab_detail);
         return view;
     }
 
 
-    @Override
     public void initData() {
 
         //indicator 数据
@@ -58,55 +57,57 @@ public class HomePager extends BaseFragment {
         JunshiFragment junshiFragment = new JunshiFragment();
         CaijingFragment caijingFragment = new CaijingFragment();
         YuleFragment yuleFragment = new YuleFragment();
-        mChannelList.add(guojiFragment);
         mChannelList.add(guoneiFragment);
+        mChannelList.add(guojiFragment);
         mChannelList.add(junshiFragment);
         mChannelList.add(caijingFragment);
         mChannelList.add(yuleFragment);
 
+
+        /**
+         * to 老婆：
+         * 当viewpager里面嵌套fragment时，viewpager的适配器必须继承FragmentPagerAdapter才有效果！！！
+         * 适配器构造方法需要传入 FragmentManager 必须用getChildFragmentManager()这个方法才能有效果！！！
+         * 这是系统源码规定的，不需要理解为什么
+         * 可能是底层对嵌入fragment加入了特殊的优化，你就需要用对应的类才行
+         */
         //设置viewpager适配器
-        if (mIndicator == null){
-            Log.e(TAG, "initData: null" );
-        }
-       mNewsDetailViewPager.setAdapter(new ChannelAdapter());
+        FragmentManager fm = getChildFragmentManager();  //获得Fragment管理器
+        mNewsDetailViewPager.setAdapter(new ChannelAdapter(fm));
         mNewsDetailViewPager.setCurrentItem(0);
+
 
         //将viewpager和指示器绑定在一起
         mIndicator.setViewPager(mNewsDetailViewPager);
 
     }
 
-    private class ChannelAdapter extends PagerAdapter {
+    /**
+     * to 老婆：
+     * 当viewpager里面嵌套fragment时，viewpager的适配器必须继承FragmentPagerAdapter才有效果！！！
+     */
+    private class ChannelAdapter extends FragmentPagerAdapter {
+        /**
+         * 构造方法需要传入 FragmentManager
+         * @param fm
+         */
+            public ChannelAdapter(FragmentManager fm) {
+                super(fm);
+            }
+
+            @Override
+            public int getCount() {
+                return mChannelList.size();
+            }
+
+            @Override
+            public Fragment getItem(int arg0) {
+                return mChannelList.get(arg0);
+            }
 
         @Override
-        public int getCount() {
-            return mChannelList.size();
-        }
-
-
-      /*  @Override
         public CharSequence getPageTitle(int position) {
-
-            return PageTitle[position] ;//每个标签的名字
+            return PageTitle[position];
         }
-*/
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            BaseFragment fragment = mChannelList.get(position);
-            View view = fragment.mRootView;
-            container.addView(view);
-            return view;
         }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((View)object);
-        }
-    }
 }

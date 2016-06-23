@@ -19,11 +19,11 @@ import java.util.List;
  */
 public class HttpUtil {
 
-    String result;
-    private NewsTabBean mNewTabData;
-    private List<NewsTabBean.ShowapiResBodyBean.PagebeanBean.ContentlistBean> mContentList;
+    private static String result;
+    private static List<NewsTabBean.ShowapiResBodyBean.PagebeanBean.ContentlistBean> mContentList;
+    private static NewsTabBean mNewTabData;
 
-    public void getDataFromService(final String url, final Handler handler) {
+    public static void getDataFromService(final String url, final Handler handler) {
 //        final String httpUrl = "http://apis.baidu.com/showapi_open_bus/channel_news/channel_news";
 //        final String httpArg = "";
         new Thread(new Runnable() {
@@ -31,16 +31,14 @@ public class HttpUtil {
             public void run() {
                 request(url, handler);
             }
-        }
-
-        ).start();
+        }).start();
     }
 
 
     /**
      * @return 返回结果
      */
-    public void request(String url, Handler handler) {
+    public static void request(String url, Handler handler) {
         BufferedReader reader = null;
         StringBuffer sbf = new StringBuffer();
 //        httpUrl = httpUrl + "?" + httpArg;
@@ -66,7 +64,7 @@ public class HttpUtil {
 
             Message msg = new Message();
             Bundle bundle = new Bundle();
-            bundle.putString("content",mContentList.toString());//将数据绑定到bundle
+            bundle.putString("content", mContentList.toString());//将数据绑定到bundle
             msg.setData(bundle);//将bundle传递到message
             handler.sendMessage(msg);//发送到主线程
         } catch (Exception e) {
@@ -78,7 +76,7 @@ public class HttpUtil {
      * 解析数据
      */
 
-    private void processData(String json) {
+    private static void processData(String json) {
         Gson gson = new Gson();
         mNewTabData = gson.fromJson(json, NewsTabBean.class);
         mContentList = mNewTabData.getShowapi_res_body().getPagebean().getContentlist();
